@@ -2,3 +2,7 @@ body {
 	background: #0B2434;
 	padding: 20px;
 }
+
+* {
+	font-family: 'Karla', sans-serif;
+}
