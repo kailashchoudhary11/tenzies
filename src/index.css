@@ -1,8 +1,14 @@
 body {
 	background: #0B2434;
 	padding: 20px;
+	overflow: hidden;
 }
 
 * {
 	font-family: 'Karla', sans-serif;
+}
+
+#root {
+	display: flex;
+	justify-content: center;
 }

@@ -14,6 +14,13 @@ function App() {
 
 	const [lowestRolls, setLowestRolls] = React.useState(JSON.parse(localStorage.getItem("lowestRolls")) || Number.MAX_VALUE);
 
+	const [time, setTime] = React.useState({
+		hours: 0,
+		minutes: 0,
+		seconds: 0,
+	});
+	let myInterval = 0;
+
 	const diceComponents = dice.map(die => (	
 		<Die 
 			isHeld={die.isHeld} 
@@ -36,6 +43,7 @@ function App() {
 				setLowestRolls(rolls);
 				localStorage.setItem("lowestRolls", JSON.stringify(lowestRolls));
 			}
+			clearInterval(myInterval);
 		}
 	}
 
@@ -62,7 +70,7 @@ function App() {
 		if (tenzies) {
 			setTenzies(false);
 			setDice(allNewDice());
-			setRolls(0);
+			setRolls(1);
 			return;
 		}
 		setDice(prevDice => prevDice.map(die => {
@@ -72,18 +80,32 @@ function App() {
 		}));
 		setRolls(prevRoll => prevRoll + 1);
 	}
-	
+
+	// React.useEffect(startTimer, []);
+
+	function startTimer() {
+		rollDice();
+		myInterval = setInterval(() => console.log("Hello"), 1000);
+	}
+
 	return (
 		<main>
 			<h1 className="title">Tenzies</h1>
             <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
 			{tenzies && <Confetti/>}
-			<p>Number of Rolls: {rolls}</p>
+			<div className="current-stats">
+				<p>Number of Rolls: {rolls}</p>
+
+			</div>
 			{tenzies && <p>Lowest Rolls: {lowestRolls}</p>}
 			<div className="dice-container">
 				{diceComponents}
 			</div>
-			<button className="roll-dice" onClick={rollDice}>{tenzies ? "New Game" : "Roll"}</button>
+			{ tenzies ? 
+				<button className="roll-dice" onClick={rollDice}>New Game</button>
+				:
+				<button className="roll-dice" onClick={rollDice}>Roll</button>
+			}
 		</main>
 	)
 }
